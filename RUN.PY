@@ -15,10 +15,10 @@ def obter_informacoes_sistema():
 
     # Verifica se há uma bateria presente para determinar se é um notebook
     for battery in c.Win32_Battery():
-        tipo = "Notebook"
+        tipo = "LAPTOP"
         break
     else:
-        tipo = "PC"
+        tipo = "DESKTOP"
 
     # Obtém o fabricante do sistema
     for system in c.Win32_ComputerSystem():
@@ -32,7 +32,6 @@ def obter_informacoes_sistema():
     ram = math.ceil(mem.total / (1024 ** 3))  # Arredonda para cima e converte bytes para gigabytes
 
     # Obtém informações sobre os discos (HDD e SSD)
-        if 'cdrom' in disco.opts or disco.fstype == '':
     ssd = 0
     hdd = 0
     for disco in c.Win32_LogicalDisk(DriveType=3):  # DriveType 3 corresponde a discos fixos
