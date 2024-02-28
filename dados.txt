@@ -3,3 +3,5 @@ PC;OOO;10;200;100;TESTE4;000;1234;SALAS@SFSD;MACEIO
 ;;;;;;;;;
 ;;;;;;;;;;
 Notebook;Dell Inc.;0WVGRF;4;0;462;teste1;0000;Eduardo Marques;aaaa@aaaa;Teresina
+PC;Gigabyte Technology Co., Ltd.;AB350M-DS3H V2-CF;16 GB;465.1 GB;164.0 GB;aa;aaa;Eduardo Marques;aaaa;aaaaa
+DESKTOP;Gigabyte Technology Co., Ltd.;AB350M-DS3H V2-CF;16 GB;465.1 GB;164.0 GB;;;Eduardo Marques;;
