@@ -32,38 +32,37 @@ def obter_informacoes_sistema():
     ram = math.ceil(mem.total / (1024 ** 3))  # Arredonda para cima e converte bytes para gigabytes
 
     # Obtém informações sobre os discos (HDD e SSD)
-    discos = psutil.disk_partitions(all=True)
-    hdd, ssd = 0, 0
-    for disco in discos:
         if 'cdrom' in disco.opts or disco.fstype == '':
-            continue
-        if 'rw' in disco.opts:
-            ssd += psutil.disk_usage(disco.mountpoint).total
+    ssd = 0
+    hdd = 0
+    for disco in c.Win32_LogicalDisk(DriveType=3):  # DriveType 3 corresponde a discos fixos
+        if 'C:' in disco.DeviceID.upper():
+            ssd += psutil.disk_usage(disco.DeviceID).total
         else:
-            hdd += psutil.disk_usage(disco.mountpoint).total
+            hdd += psutil.disk_usage(disco.DeviceID).total
 
-    # Convertendo de bytes para gigabytes e arredondando para cima
-    hdd = math.ceil(hdd / (1024 ** 3))
-    ssd = math.ceil(ssd / (1024 ** 3))
+    # Convertendo de bytes para gigabytes com arredondamento para uma casa decimal
+    ssd = round(ssd / (1024 ** 3), 1)
+    hdd = round(hdd / (1024 ** 3), 1)
 
     return tipo, fabricante, modelo_placa_mae, ram, hdd, ssd, usuario
 
 def obter_informacoes():
     tipo, fabricante, modelo_placa_mae, ram, hdd, ssd, usuario = obter_informacoes_sistema()
-    
+
     # Preencher automaticamente os campos
     entradas["TIPO"].insert(0, tipo)
     entradas["MARCA"].insert(0, fabricante)
     entradas["MODELO"].insert(0, modelo_placa_mae)
-    entradas["RAM"].insert(0, str(ram) + " GB")
-    entradas["HDD"].insert(0, str(hdd) + " GB")
-    entradas["SSD"].insert(0, str(ssd) + " GB")
+    entradas["RAM"].insert(0, f"{ram} GB")
+    entradas["HDD"].insert(0, f"{hdd} GB")
+    entradas["SSD"].insert(0, f"{ssd} GB")
     entradas["USUARIO"].insert(0, usuario)
 
 def escrever_dados():
     dados = ";".join([entradas[campo].get() for campo in entradas]) + "\n"  # Adiciona uma quebra de linha ao final do texto
     with open("dados.txt", "a") as arquivo:  # Modo "a" para adicionar ao arquivo
-        arquivo.write(dados)  
+        arquivo.write(dados)
     messagebox.showinfo("Dados Escritos", "Os dados foram escritos com sucesso!")
 
 # Criar janela principal
@@ -84,8 +83,8 @@ campos = [
     "MARCA",
     "MODELO",
     "RAM",
-    "HDD",
     "SSD",
+    "HDD",
     "RESPONSAVEL",
     "MATRICULA",
     "USUARIO",
